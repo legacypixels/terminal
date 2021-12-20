@@ -1,6 +1,10 @@
-# Geoff's VT100 Terminal
+# Enhanced VT100 Terminal
 
-DIY kit including parts and PCB is available on [Tindie](https://www.tindie.com/products/petrohi/geoffs-vt100-terminal-kit/).
+Based on:
+* [ASCII Video Terminal](https://geoffg.net/terminal.html) By Geoff Graham
+and
+* [Geoff's VT100 Terminal](https://github.com/petrohi/terminal) By Peter Hizalev
+
 
 ## Use PICKit4 to flash the PIC32
 
