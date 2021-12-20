@@ -1,4 +1,5 @@
 #include <plib.h>
+#include <peripheral/pps.h>
 #include "main.h"
 
 /*

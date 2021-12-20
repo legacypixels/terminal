@@ -322,7 +322,7 @@ static const struct terminal_ui_menu menus[] = {
          {"Signal levels", current_serial_inverted, change_serial_inverted,
           &(const struct terminal_ui_choice[]){
               {"TTL"},
-              {"RS232"},
+              //{"RS232"},
               {NULL},
           }},
 #endif

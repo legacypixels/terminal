@@ -61,7 +61,7 @@ the non US keyboard layouts
 #include <plib.h>
 #include "main.h"
 #include "ps2.h"
-
+#include <peripheral/pps.h>
 struct ps2 ps2;
 
 struct ps2 *global_ps2;

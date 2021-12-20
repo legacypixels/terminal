@@ -5,6 +5,7 @@
 
 #include "vga.h"
 #include "terminal.h"
+#include <peripheral/pps.h>
 
 #define VGA_LINES 525
 #define VGA_V_SYNC 2

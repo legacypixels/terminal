@@ -2,18 +2,19 @@
 
 #define PRODUCT_NAME                                                           \
   "\33[1;91mA\33[92mS\33[93mC\33[94mI\33[95mI\33[39m Terminal\33[m\r\n"
-#define PRODUCT_VERSION "Version 3.0.5\r\n"
+#define PRODUCT_VERSION "Version 3.0.5_lp-1\r\n"
 #ifdef TERMINAL_8BIT_COLOR
 #define PRODUCT_COPYRIGHT                                                      \
   "Copyright (C) 2019-2020 Peter Hizalev\r\n"                                  \
   "https://github.com/petrohi/ascii_terminal\r\n"
 #else
-#define PRODUCT_COPYRIGHT                                                      \
+#define PRODUCT_COPYRIGHT\
+  "Copyright (C) 2921 Legacy Pixels LLC\r\n"                                   \
   "Copyright (C) 2019-2021 Peter Hizalev\r\n"                                  \
   "Copyright (C) 2014 Geoff Graham\r\n"                                        \
   "Copyright (C) 2020 Birko Bergt (DL8BB)\r\n"                                 \
   "Copyright (C) 2021 Stefan \"Blixten\" Karlsson\r\n"                         \
-  "https://github.com/petrohi/terminal\r\n"
+  "https://github.com/legacypixels/terminal\r\n"
 #endif
 #define PRODUCT_HELP "\r\nPress CTRL+ALT+DEL to enter SETUP\r\n"
 

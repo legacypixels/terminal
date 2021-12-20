@@ -49,6 +49,7 @@
 
 
 #include <plib.h>									// peripheral libraries
+#include <peripheral/pps.h>
 #include <string.h>
 #include <ctype.h>
 #include "config.h"                     // config pragmas
@@ -88,7 +89,8 @@ void CheckUSB(void);
 
 void initTimer(void);
 
-void BlinkLED(void);
+void BlinkLEDTX(void);
+void BlinkLEDRX(void);
 
 #define SERIAL_RX_BUFFER_SIZE 8192
 char uart_rx_buffer[SERIAL_RX_BUFFER_SIZE];
@@ -115,7 +117,9 @@ char UsbDeviceTxBuf[USB_DEVICE_TX_BUFFER_SIZE];
 // The only pointer that we need is this one which keep track of where we are while reading the uart Rx buffer
 int USBSerialRxBufTail = 0;
 
-volatile int LEDTimer = 0;
+volatile int LEDTXTimer = 0;
+volatile int LEDRXTimer = 0;
+
 volatile int GeneralTimer;
 
 #define FONT_WIDTH 8
@@ -200,7 +204,7 @@ static void yield() {
   }
 
   if (global_ps2->keys[0] != KEY_NONE)
-    BlinkLED();
+    BlinkLEDTX();
 }
 
 static void uart_transmit(character_t *characters, size_t size, size_t head) {
@@ -307,8 +311,11 @@ int main(int argc, char* argv[]) {
   CNENA = CNENB = CNCONA = CNCONB = 0;
   CNPUA = CNPUB = CNPDA = CNPDB = 0;
 
-  TRISBbits.TRISB5 = 0;
-  LATBCLR = (1 << 5); // turn on the power LED
+  TRISBbits.TRISB5 = 0;     // TX LED
+  TRISBbits.TRISB4 = 0;     // RX LED
+  
+  LATBCLR = (1 << 5); // turn on RX & TX during init
+  LATBCLR = (1 << 4); //
   uSec(1000);         // settling time
 
   keyboard_init();
@@ -363,7 +370,13 @@ int main(int argc, char* argv[]) {
 
   size_t local_loop_tail = 0;
   size_t uart_rx_tail = 0;
+  
+  // INIT Complete
+  LATBSET = (1 << 4);       // Turn off TX & RX LEDs
+  LATBSET = (1 << 5);
 
+  StartBuzzer();
+ 
   while (1) {
     yield();
     terminal_screen_update(&terminal);
@@ -488,7 +501,7 @@ void __ISR(_UART2_VECTOR, IPL3AUTO) uart_handler(void) {
         uart_rx_head = 0;
     }
 
-    BlinkLED();
+    BlinkLEDRX();
     INTClearFlag(INT_SOURCE_UART_RX(UART2));
   }
 
@@ -537,7 +550,7 @@ void CheckUSB(void) {
                 if(numBytesRead > 0) {                                             // if we have some data,
                     for(i = 0; i < numBytesRead; i++)
                         terminal_uart_transmit_character(global_terminal, UsbDeviceRxBuf[i]); // copy it into the uart output queue
-                    BlinkLED();
+                    BlinkLEDTX();
                 }
             }
 
@@ -627,8 +640,11 @@ This fires every mSec and is responsible for tracking the time and the counts of
 
 void __ISR( _TIMER_4_VECTOR, IPL1AUTO) T4Interrupt(void) {
 
-    if(LEDTimer)
-        if(--LEDTimer < 25) LATBCLR = (1<<5);
+    if(LEDTXTimer)
+        if(--LEDTXTimer < 25) LATBSET = (1<<5);
+    
+    if(LEDRXTimer)
+        if(--LEDRXTimer < 25) LATBSET = (1 << 4);
 
     StopBuzzerWhenTimeout();
 
@@ -640,10 +656,16 @@ void __ISR( _TIMER_4_VECTOR, IPL1AUTO) T4Interrupt(void) {
     mT4ClearIntFlag();
 }
 
+void BlinkLEDTX(void) {
+    if(LEDTXTimer  == 0) {
+        LEDTXTimer = 100;
+        LATBCLR = (1<<5);
+    }
+}
 
-void BlinkLED(void) {
-    if(LEDTimer  == 0) {
-        LEDTimer = 75;
-        LATBSET = (1<<5);
+void BlinkLEDRX(void) {
+    if(LEDRXTimer  == 0) {
+        LEDRXTimer = 100;
+        LATBCLR = (1<<4);
     }
 }
