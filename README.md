@@ -1,5 +1,8 @@
 # Enhanced VT100 Terminal
 
+## Beta hardware complete, final pcb off to production
+Estimated availability 3-Jan-2022
+
 Based on:
 * [ASCII Video Terminal](https://geoffg.net/terminal.html) By Geoff Graham
 and
