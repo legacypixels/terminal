@@ -9,11 +9,15 @@
  */
 
 // PWM signal (800 Hz, 2% high, 98% low)
-#define PWM_FREQ 800 // in Hz
-#define PWM_HIGH 2   // in %
+#define PWM_FREQ 995 // in Hz  C# =D
+#define PWM_HIGH 50   // in %
 
-void initBuzzer(void)
+static volatile _Bool buzzerEnable;
+
+void initBuzzer(_Bool buzEn)
 {
+    buzzerEnable = buzEn;
+    
     const uint32_t period = CLOCKFREQ / 64 / PWM_FREQ;
     const uint32_t oc = period * PWM_HIGH / 100;
 
@@ -28,14 +32,17 @@ void initBuzzer(void)
     OUT_PIN_PPS1_RPB3 = OUT_FN_PPS1_OC1; // Output OC1 to RPB3
 }
 
+
 static volatile int BuzzerTimer = 0;
 
 void StartBuzzer(void)
 {
+    if (buzzerEnable) {
     if (BuzzerTimer == 0) {
-        BuzzerTimer = 75;
+        BuzzerTimer = 125;
         OC1CONSET = OC_ON; // Enable PWN signal to buzzer
     }
+}
 }
 
 void StopBuzzerWhenTimeout(void)

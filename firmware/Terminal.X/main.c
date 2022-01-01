@@ -343,7 +343,7 @@ int main(int argc, char* argv[]) {
 
   INTEnableSystemMultiVectoredInt();
 
-  initBuzzer();
+  initBuzzer(terminal.buzzer_enable);
   initTimer();
   init_uart();
   USBDeviceInit();

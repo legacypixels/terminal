@@ -121,6 +121,7 @@ struct terminal_config {
   bool ansi_mode;
   bool backspace_mode;
   bool application_keypad_mode;
+  bool buzzer_enable;
 
   enum start_up start_up;
 };

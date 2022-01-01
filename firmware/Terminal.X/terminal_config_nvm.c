@@ -26,6 +26,7 @@ const struct terminal_config terminal_config = {
     .auto_repeat_mode = true,
     .ansi_mode = true,
     .backspace_mode = false,
+    .buzzer_enable = true,
     .application_keypad_mode = false,
 
     .flow_control = true,

@@ -173,6 +173,7 @@ struct terminal {
   bool auto_repeat_mode;
   bool ansi_mode;
   bool backspace_mode;
+  bool buzzer_enable;
 
   struct visual_state vs;
   struct visual_state saved_vs;

@@ -242,6 +242,16 @@ static void change_backspace_mode(struct terminal_config_ui *terminal_config_ui,
 }
 
 static size_t
+current_buzzer_mode(struct terminal_config_ui *terminal_config_ui) {
+  return terminal_config_ui->terminal_config_copy.buzzer_enable;
+}
+
+static void change_buzzer_mode(struct terminal_config_ui *terminal_config_ui,
+                                  size_t buzzer_mode) {
+  terminal_config_ui->terminal_config_copy.buzzer_enable = buzzer_mode;
+}
+
+static size_t
 current_application_keypad_mode(struct terminal_config_ui *terminal_config_ui) {
   return terminal_config_ui->terminal_config_copy.application_keypad_mode;
 }
@@ -393,7 +403,9 @@ static const struct terminal_ui_menu menus[] = {
           }},
          {"Backspace mode (DECBKM)", current_backspace_mode,
           change_backspace_mode, &off_on_choices},
-         {NULL}}},
+         {"Buzzer Enable", current_buzzer_mode,
+          change_buzzer_mode, &off_on_choices},
+         {NULL}}},         
     {"Video",
      &(const struct terminal_ui_option[]){
          {"Number of lines", current_format_rows, change_format_rows,
