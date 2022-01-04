@@ -1,6 +1,6 @@
 # Enhanced VT100 Terminal
 
-## Boards now available at [Legacy Pixels Website](https://www/legacypixels.com/)
+## Boards now available at [Legacy Pixels Website](https://www.legacypixels.com/)
 
 Based on:
 * [ASCII Video Terminal](https://geoffg.net/terminal.html) By Geoff Graham
