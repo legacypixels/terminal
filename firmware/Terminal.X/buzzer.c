@@ -35,14 +35,13 @@ void initBuzzer(_Bool buzEn)
 
 static volatile int BuzzerTimer = 0;
 
-void StartBuzzer(void)
-{
+void StartBuzzer(void) {
     if (buzzerEnable) {
-    if (BuzzerTimer == 0) {
-        BuzzerTimer = 125;
-        OC1CONSET = OC_ON; // Enable PWN signal to buzzer
+        if (BuzzerTimer == 0) {
+            BuzzerTimer = 125;
+            OC1CONSET = OC_ON; // Enable PWN signal to buzzer
+        }
     }
-}
 }
 
 void StopBuzzerWhenTimeout(void)

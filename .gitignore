@@ -6,3 +6,6 @@ fp-info-cache
 fp-lib-table
 sym-lib-table
 .DS_Store
+**/build
+**/debug
+**/dist

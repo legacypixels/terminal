@@ -1,7 +1,7 @@
 # Enhanced VT100 Terminal
 
 ## Beta hardware complete, final pcb off to production
-Estimated availability 3-Jan-2022
+Boards now available at [Legacy Pixels Website](https://www/legacypixels.com/)
 
 Based on:
 * [ASCII Video Terminal](https://geoffg.net/terminal.html) By Geoff Graham
@@ -23,3 +23,7 @@ and
 * Fork from Peter's awesome firmware
 * Support for new PCB design
 
+
+![Version 1.2 PCB](/doc/vt100_board_800x800.jpg)
+![Hardware Features](/doc/vt100_labeled_800x800.jpg)
+![Case](/doc/vt100_case_800x800.jpg)
