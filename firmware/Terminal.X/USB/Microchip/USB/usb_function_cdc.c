@@ -99,8 +99,8 @@
 ********************************************************************/
 
 /** I N C L U D E S **********************************************************/
-#include "../../Include/USB/usb.h"
-#include "../../Include/USB/usb_function_cdc.h"
+#include "../Include/USB/usb.h"
+#include "../Include/USB/usb_function_cdc.h"
 
 #ifdef USB_USE_CDC
 
