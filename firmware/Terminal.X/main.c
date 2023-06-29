@@ -4,13 +4,18 @@
 
 	VT100 Terminal program
 
-
+ * Copyright (C) 2021-2023 Legacy Pixels LLC
+ * ken@legacypixels.com
+ * All rights reserved
+ * 
+ * Forked from TerminalX:
+ *  
 	Copyright (C) 2014-2019
 	Geoff Graham (projects@geoffg.net) and Peter Hizalev (peter.hizalev@gmail.com)
 	All rights reserved.
-
+ * 
 	This file and the program created from it are FREE FOR COMMERCIAL AND
-	NON-COMMERCIAL USE as long as the following conditions are aheared to.
+	NON-COMMERCIAL USE as long as the following conditions are adhered to.
 
 	Copyright remains Geoff Graham's, and as such any Copyright notices in the
 	code are not to be removed.  If this code is used in a product, Geoff Graham
@@ -26,7 +31,7 @@
 	   list of conditions and the following disclaimer in the documentation and/or
 	   other materials provided with the distribution.
 	3. All advertising materials mentioning features or use of this software must
-	   display the following acknowledgement:
+	   display the following acknowledgment:
 	   This product includes software developed by Geoff Graham (projects@geoffg.net)
        and Peter Hizalev (peter.hizalev@gmail.com)
 
@@ -41,9 +46,9 @@
 	IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 	SUCH DAMAGE.
 
-	The licence and distribution terms for any publically available version or
+	The license and distribution terms for any publicly available version or
 	derivative of this code cannot be changed.  i.e. this code cannot simply be copied
-	and put under another distribution licence (including the GNU Public Licence).
+	and put under another distribution license (including the GNU Public License).
 
 ********************************************************************************************************************************/
 
@@ -80,6 +85,7 @@
 extern void keyboard_init();
 extern bool keyboard_set_leds(int num, int caps, int scroll, void (*yield)());
 extern bool keyboard_test(void (*yield)());
+extern bool keyboard_reset(void (*yield)());
 
 extern struct ps2 *global_ps2;
 
@@ -356,16 +362,53 @@ int main(int argc, char* argv[]) {
   global_terminal_config_ui = &terminal_config_ui;
   terminal_config_ui_init(&terminal_config_ui, &terminal, &terminal_config);
 
+  // keyboard detection
+  /*
+  terminal_uart_receive_string(&terminal, "Keyboard Init..\r\n");
+  terminal_uart_receive_string(&terminal, "Sending RESET... ");
+  uint8_t response = keyboard_test_step(0xff, yield);
+  if (response == 0xfa ) {
+      terminal_uart_receive_string(&terminal, "PASS..\r\n");
+  } else {
+      char hexstring[10];
+      sprintf(hexstring,"%x",response);
+      terminal_uart_receive_string(&terminal, "Incorrect response\r\n");
+      terminal_uart_receive_string(&terminal, "Got [");
+      terminal_uart_receive_string(&terminal, hexstring);
+      terminal_uart_receive_string(&terminal, "]\r\n");
+  }
+    terminal_uart_receive_string(&terminal, "Sending LED info\r\n");
+    response = keyboard_test_step(0xed, yield);
+    response = keyboard_test_step(0x07, yield);
+    if (response == 0xfa ) {
+        terminal_uart_receive_string(&terminal, "Success..\r\n");
+    } else {
+    char hexstring[10];
+    sprintf(hexstring,"%x",response);
+    terminal_uart_receive_string(&terminal, "Incorrect response\r\n");
+    terminal_uart_receive_string(&terminal, "Got [");
+    terminal_uart_receive_string(&terminal, hexstring);
+    terminal_uart_receive_string(&terminal, "]\r\n");
+    }
+
+  */
+  
   bool keyboard_detected = false;
   size_t retries = KEYBOARD_RETRIES;
   while (retries-- && !(keyboard_detected = keyboard_test(yield)))
     ;
-
-  if (keyboard_detected) {
+  
+  // force reset if LED set fails
+  if (!keyboard_detected) {
+      terminal_uart_receive_string(&terminal, "Force keyboard reset...\r\n");
+      keyboard_detected = keyboard_reset(yield);
+  }
+      
+  if (keyboard_detected) { 
     terminal_keyboard_update_leds(&terminal);
   } else {
     terminal_uart_receive_string(&terminal,
-                                 "PS/2 keyboard is not detected!\r\n");
+            "PS/2 keyboard did not respond to set or reset commands!!\r\n");
   }
 
   size_t local_loop_tail = 0;

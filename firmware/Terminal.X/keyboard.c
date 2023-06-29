@@ -4,13 +4,18 @@
 
     Keyboard processing for the VT100 Terminal program
 
+ * Copyright (C) 2021-2023 Legacy Pixels LLC
+ * ken@legacypixels.com
+ * All rights reserved
+ * 
+ * Forked from TerminalX:
 
     Copyright (C) 2014-2019
     Geoff Graham (projects@geoffg.net) and Peter Hizalev (peter.hizalev@gmail.com)
     All rights reserved.
 
     This file and the program created from it are FREE FOR COMMERCIAL AND
-    NON-COMMERCIAL USE as long as the following conditions are aheared to.
+    NON-COMMERCIAL USE as long as the following conditions are adhered to.
 
     Copyright remains Geoff Graham's, and as such any Copyright notices in the
     code are not to be removed.  If this code is used in a product, Geoff Graham
@@ -26,7 +31,7 @@
        list of conditions and the following disclaimer in the documentation and/or
        other materials provided with the distribution.
     3. All advertising materials mentioning features or use of this software must
-       display the following acknowledgement:
+       display the following acknowledgment:
        This product includes software developed by Geoff Graham (projects@geoffg.net)
        and Peter Hizalev (peter.hizalev@gmail.com)
 
@@ -41,9 +46,9 @@
     IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
     SUCH DAMAGE.
 
-    The licence and distribution terms for any publically available version or
+    The license and distribution terms for any publicly available version or
     derivative of this code cannot be changed.  i.e. this code cannot simply be copied
-    and put under another distribution licence (including the GNU Public Licence).
+    and put under another distribution license (including the GNU Public License).
 
 ****************************************************************************************************************************
 
@@ -173,6 +178,8 @@ timeout:
 }
 
 bool keyboard_test(void (*yield)()) {
+  // send reset for cranky keyboards
+  
   bool success = send_command(0xee);
   if (!success)
     return false;
@@ -200,6 +207,21 @@ bool keyboard_set_leds(bool caps, bool num, bool scroll, void (*yield)()) {
   return send_command((((int)caps & 1) << 2) | (((int)num & 1) << 1) |
                       ((int)scroll & 1)); // set the various LEDs
 }
+
+bool keyboard_reset(void (*yield)() ){
+        bool success = send_command(0xff); // reset command
+        if (!success)
+            return 0;        
+        GeneralTimer = 800;  // kbd must respond within 500-750 mS
+        while (ps2.response == 0 && GeneralTimer != 0)
+            yield();
+        if (ps2.response != PS2_COMMAND_ACK)
+            return false;
+        return true;
+}
+
+
+
 
 /***************************************************************************************************
 change notification interrupt service routine
