@@ -1,3 +1,13 @@
+ /* Copyright (C) 2021-2023 Legacy Pixels LLC
+ * ken@legacypixels.com
+ * All rights reserved
+ * 
+ * Forked from TerminalX:
+	Copyright (C) 2014-2019
+	Geoff Graham (projects@geoffg.net) and Peter Hizalev (peter.hizalev@gmail.com)
+	All rights reserved.
+*/
+
 #include "terminal_config_ui.h"
 
 #include <stdarg.h>
@@ -263,6 +273,16 @@ change_application_keypad_mode(struct terminal_config_ui *terminal_config_ui,
       application_keypad_mode;
 }
 
+static size_t current_termid(struct terminal_config_ui *terminal_config_ui) {
+  return terminal_config_ui->terminal_config_copy.termid;
+}
+
+static void change_termid(struct terminal_config_ui *terminal_config_ui,
+                             size_t termid) {
+  terminal_config_ui->terminal_config_copy.termid = termid;
+}
+
+
 static const struct terminal_ui_choice off_on_choices[] = {
     {"off"},
     {"on"},
@@ -405,7 +425,15 @@ static const struct terminal_ui_menu menus[] = {
           change_backspace_mode, &off_on_choices},
          {"Buzzer Enable", current_buzzer_mode,
           change_buzzer_mode, &off_on_choices},
-         {NULL}}},         
+         {"Terminal ID", current_termid, change_termid,
+          &(const struct terminal_ui_choice[]){
+              {"VT100"},
+              {"VT220"},
+              {"VT520"},
+              {NULL},
+         }},
+    {NULL}}},  
+
     {"Video",
      &(const struct terminal_ui_option[]){
          {"Number of lines", current_format_rows, change_format_rows,

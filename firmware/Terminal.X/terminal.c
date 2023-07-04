@@ -8,11 +8,18 @@
 	All rights reserved.
 */
 
+/*
+ * 3.2.0_lp-3: More robust keyboard initialization
+ * 3.2.0_lp-4: Add configurable terminal ID (ESC [ c response)
+
+ */
+
+
 #include "terminal_internal.h"
 
 #define PRODUCT_NAME                                                           \
   "\33[1;91mA\33[92mS\33[93mC\33[94mI\33[95mI\33[39m Terminal\33[m\r\n"
-#define PRODUCT_VERSION "Version 3.2.0_lp-3\r\n"
+#define PRODUCT_VERSION "Version 3.2.0_lp-4\r\n"
 #ifdef TERMINAL_8BIT_COLOR
 #define PRODUCT_COPYRIGHT                                                      \
   "Copyright (C) 2019-2020 Peter Hizalev\r\n"                                  \
@@ -89,6 +96,7 @@ void terminal_init(struct terminal *terminal,
   terminal->ansi_mode = config->ansi_mode;
   terminal->backspace_mode = config->backspace_mode;
   terminal->buzzer_enable = config->buzzer_enable;
+  terminal->terminal_id = config->termid;
 
   terminal->flow_control = config->flow_control;
 

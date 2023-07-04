@@ -28,6 +28,7 @@ const struct terminal_config terminal_config = {
     .backspace_mode = false,
     .buzzer_enable = true,
     .application_keypad_mode = false,
+    .termid = TERMID_VT520,
 
     .flow_control = true,
 

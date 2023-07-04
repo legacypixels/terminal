@@ -412,7 +412,16 @@ static void receive_rep(struct terminal *terminal, character_t character) {
 }
 
 static void receive_da(struct terminal *terminal, character_t character) {
-  terminal_uart_transmit_string(terminal, "\x1b[?65;1;9c");
+  switch(terminal->terminal_id) {
+      case TERMID_VT100:
+        terminal_uart_transmit_string(terminal, "\x1b[?1;0c");
+        break;
+      case TERMID_VT220:
+            terminal_uart_transmit_string(terminal, "\x1b[?62;1;9c");
+            break;
+      default:
+            terminal_uart_transmit_string(terminal, "\x1b[?65;1;9c");
+  }
   clear_receive_table(terminal);
 }
 

@@ -1,3 +1,13 @@
+ /* Copyright (C) 2021-2023 Legacy Pixels LLC
+ * ken@legacypixels.com
+ * All rights reserved
+ * 
+ * Forked from TerminalX:
+	Copyright (C) 2014-2019
+	Geoff Graham (projects@geoffg.net) and Peter Hizalev (peter.hizalev@gmail.com)
+	All rights reserved.
+*/
+
 #pragma once
 
 #include <stdbool.h>
@@ -174,6 +184,7 @@ struct terminal {
   bool ansi_mode;
   bool backspace_mode;
   bool buzzer_enable;
+  enum term_id terminal_id;
 
   struct visual_state vs;
   struct visual_state saved_vs;

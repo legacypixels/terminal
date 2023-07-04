@@ -1,3 +1,14 @@
+ /* Copyright (C) 2021-2023 Legacy Pixels LLC
+ * ken@legacypixels.com
+ * All rights reserved
+ * 
+ * Forked from TerminalX:
+	Copyright (C) 2014-2019
+	Geoff Graham (projects@geoffg.net) and Peter Hizalev (peter.hizalev@gmail.com)
+	All rights reserved.
+*/
+
+
 #pragma once
 
 #include <stdbool.h>
@@ -87,6 +98,13 @@ enum monochrome_transform {
 };
 #endif
 
+enum term_id {
+    TERMID_VT52 = 0,
+    TERMID_VT100 = 1,
+    TERMID_VT220 = 2,
+    TERMID_VT520 = 3,
+};
+
 struct terminal_config {
   enum format_rows format_rows;
 #ifndef TERMINAL_8BIT_COLOR
@@ -122,6 +140,7 @@ struct terminal_config {
   bool backspace_mode;
   bool application_keypad_mode;
   bool buzzer_enable;
+  enum term_id termid;
 
   enum start_up start_up;
 };
