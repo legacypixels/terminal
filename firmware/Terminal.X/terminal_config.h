@@ -118,9 +118,8 @@ struct terminal_config {
   enum stop_bits stop_bits;
   enum parity parity;
   bool flow_control;
-#ifdef TERMINAL_SERIAL_INVERTED
   bool serial_inverted;
-#endif
+
 
   enum charset charset;
   enum keyboard_compatibility keyboard_compatibility;

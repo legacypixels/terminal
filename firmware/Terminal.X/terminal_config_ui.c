@@ -64,7 +64,6 @@ static void change_word_length(struct terminal_config_ui *terminal_config_ui,
 }
 #endif
 
-#ifdef TERMINAL_SERIAL_INVERTED
 static size_t
 current_serial_inverted(struct terminal_config_ui *terminal_config_ui) {
   return terminal_config_ui->terminal_config_copy.serial_inverted;
@@ -75,7 +74,6 @@ change_serial_inverted(struct terminal_config_ui *terminal_config_ui,
                        size_t serial_inverted) {
   terminal_config_ui->terminal_config_copy.serial_inverted = serial_inverted;
 }
-#endif
 
 static size_t current_stop_bits(struct terminal_config_ui *terminal_config_ui) {
   return terminal_config_ui->terminal_config_copy.stop_bits;
@@ -348,14 +346,13 @@ static const struct terminal_ui_menu menus[] = {
                                                [WORD_LENGTH_9B] = {"9 bits"},
                                                {NULL}}},
 #endif
-#ifdef TERMINAL_SERIAL_INVERTED
          {"Signal levels", current_serial_inverted, change_serial_inverted,
           &(const struct terminal_ui_choice[]){
-              {"TTL"},
-              //{"RS232"},
+              {"Normal"},
+              {"Inverted"},
               {NULL},
           }},
-#endif
+                                                       
          {"Stop bits", current_stop_bits, change_stop_bits,
           &(const struct terminal_ui_choice[]){
               [STOP_BITS_1] = {"1 bit"}, [STOP_BITS_2] = {"2 bits"}, {NULL}}},
